@@ -4,34 +4,35 @@ import type { Entry } from './types/models'
 import { LOCAL } from './types/entryTypes'
 
 export const useEntriesStore = defineStore('entries', () => {
-  const entries = reactive<Entry[]>([
-    {
-      id: '1',
-      tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
-      type: LOCAL,
-      login: 'Test User 1',
-      password: '',
-    },
-    {
-      id: '2',
-      tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
-      type: LOCAL,
-      login: 'Test User 2',
-      password: '',
-    },
-    {
-      id: '3',
-      tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
-      type: LOCAL,
-      login: 'Test User 3',
-      password: '',
-    },
-  ])
+  const entries = reactive<Map<string, Entry>>(new Map())
+  entries.set('1', {
+    id: '1',
+    tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
+    type: LOCAL,
+    login: 'Test User 1',
+    password: '',
+  })
+  entries.set('2', {
+    id: '2',
+    tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
+    type: LOCAL,
+    login: 'Test User 2',
+    password: '',
+  })
+  entries.set('3', {
+    id: '3',
+    tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
+    type: LOCAL,
+    login: 'Test User 3',
+    password: '',
+  })
 
-  const putEntry = () => {}
+  const saveEntry = (entry: Entry) => {
+    entries.set(entry.id, entry)
+  }
   const deleteEntry = (id: string) => {
-    entries.splice(0, entries.length, ...entries.filter((e) => e.id !== id))
+    entries.delete(id)
   }
 
-  return { entries, putEntry, deleteEntry }
+  return { entries, saveEntry, deleteEntry }
 })

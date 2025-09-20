@@ -7,32 +7,28 @@ import { Button } from 'primevue'
 import { LOCAL } from '@/types/entryTypes'
 
 const store = useEntriesStore()
-const newEntries = reactive<Entry[]>([])
-const displayableEntries = computed(() => [...store.entries, ...newEntries])
-
-const deleteNewEntry = (id: string) => {
-  const index = newEntries.findIndex((e) => e.id === id)
-  newEntries.splice(index, 1)
-}
+const newEntries = reactive<Map<string, Entry>>(new Map())
+const displayableEntries = computed(() => [...store.entries.values(), ...newEntries.values()])
 
 const handleDelete = (id: string) => {
-  const isNew = newEntries.some((e) => e.id === id)
-  if (isNew) {
-    deleteNewEntry(id)
-    return
-  }
-
+  newEntries.delete(id)
   store.deleteEntry(id)
 }
 
+const handleSave = (entry: Entry) => {
+  newEntries.delete(entry.id)
+  store.saveEntry(entry)
+}
+
 const addNewEntry = () => {
-  newEntries.push({
+  const entry: Entry = {
     id: crypto.randomUUID().toString(),
     tags: [],
     type: LOCAL,
     login: '',
     password: '',
-  })
+  }
+  newEntries.set(entry.id, entry)
 }
 </script>
 
@@ -47,7 +43,7 @@ const addNewEntry = () => {
   </div>
   <ul class="flex flex-col gap-4">
     <li v-for="entry in displayableEntries" :key="entry.id">
-      <SingleEntry :entry="entry" :delete-entry="handleDelete" />
+      <SingleEntry :entry="entry" :delete-entry="handleDelete" :save-entry="handleSave" />
     </li>
   </ul>
 </template>

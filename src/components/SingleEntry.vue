@@ -10,6 +10,7 @@ import { LDAP, LOCAL } from '@/types/entryTypes'
 interface Props {
   entry: Entry
   deleteEntry: (id: string) => void
+  saveEntry: (entry: Entry) => void
 }
 
 const props = defineProps<Props>()
@@ -31,10 +32,13 @@ const typeOptions = [
   { value: LDAP, label: 'LDAP' },
 ]
 
-const updateEntry = () => {}
+const getFormatedTags = (tags: string) => {
+  return tags.split(';').map((tag) => {
+    return { text: tag }
+  })
+}
 
 const validateFields = () => {
-  console.log(state.type)
   for (const key in state.errors) {
     state.errors[key as keyof typeof state.errors] = ''
   }
@@ -46,7 +50,13 @@ const validateFields = () => {
     if (state.errors[key as keyof typeof state.errors] !== '') return
   }
 
-  updateEntry()
+  props.saveEntry({
+    id: props.entry.id,
+    tags: getFormatedTags(state.tags),
+    type: state.type,
+    login: state.login,
+    password: state.password,
+  })
 }
 </script>
 
