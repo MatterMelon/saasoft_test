@@ -38,8 +38,23 @@ const addNewEntry = () => {
 
 <template>
   <Button label="" icon="pi pi-plus" type="button" class="p-button-outlined" @click="addNewEntry" />
-  <ul>
-    <li v-for="entry in displayableEntries" :key="entry.id">
+  <div class="grid grid-cols-[1fr_0.4fr_1fr_1fr_40px] gap-2 font-bold text-gray-700">
+    <div>Метки</div>
+    <div>Тип записи</div>
+    <div>Логин</div>
+    <div>Пароль</div>
+    <div></div>
+  </div>
+  <ul class="flex flex-col gap-4">
+    <li
+      v-for="entry in displayableEntries"
+      :key="entry.id"
+      :class="
+        entry.type !== LOCAL
+          ? 'grid grid-cols-[1fr_0.4fr_2fr_40px] gap-2 items-stretch'
+          : 'grid grid-cols-[1fr_0.4fr_1fr_1fr_40px] gap-2 items-stretch'
+      "
+    >
       <SingleEntry :entry="entry" :delete-entry="handleDelete" />
     </li>
   </ul>
