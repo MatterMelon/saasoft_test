@@ -9,7 +9,7 @@ import { LDAP, LOCAL } from '@/types/entryTypes'
 
 interface Props {
   entry: Entry
-  deleteEntry: (id: number) => void
+  deleteEntry: (id: string) => void
 }
 
 const props = defineProps<Props>()
@@ -49,7 +49,13 @@ const validateFields = () => {}
       @blur="validateFields"
     />
     <div class="flex items-center justify-center pb-6">
-      <button type="button" class="text-gray-500 hover:text-red-500">X</button>
+      <button
+        type="button"
+        class="text-gray-500 hover:text-red-500"
+        @click="() => deleteEntry(props.entry.id)"
+      >
+        X
+      </button>
     </div>
   </div>
 </template>
