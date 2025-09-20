@@ -4,7 +4,7 @@ import { type Entry } from '@/types/models'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
 
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import { LDAP, LOCAL } from '@/types/entryTypes'
 
 interface Props {
@@ -39,12 +39,12 @@ const getFormatedTags = (tags: string) => {
 }
 
 const validateFields = () => {
-  for (const key in state.errors) {
-    state.errors[key as keyof typeof state.errors] = ''
+  state.errors.login = state.login ? '' : 'Обязательное поле'
+  if (state.type === LOCAL) {
+    state.errors.password = state.password ? '' : 'Обязательное поле'
+  } else {
+    state.errors.password = ''
   }
-
-  if (!state.login) state.errors.login = 'Обязательное поле'
-  if (!state.password) state.errors.password = 'Обязательное поле'
 
   for (const key in state.errors) {
     if (state.errors[key as keyof typeof state.errors] !== '') return
@@ -55,9 +55,21 @@ const validateFields = () => {
     tags: getFormatedTags(state.tags),
     type: state.type,
     login: state.login,
-    password: state.password,
+    password: state.type === LOCAL ? state.password : null,
   })
 }
+
+// Update local state on store update
+watch(
+  () => props.entry,
+  (newEntry) => {
+    state.tags = newEntry.tags.map((t) => t.text).join(';')
+    state.type = newEntry.type
+    state.login = newEntry.login
+    state.password = newEntry.password
+  },
+  { deep: true, immediate: true },
+)
 </script>
 
 <template>
