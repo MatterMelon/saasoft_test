@@ -10,6 +10,10 @@ import { LOCAL } from '@/types/entryTypes'
 import type { Entry } from '@/types/models'
 
 const store = useEntriesStore()
+store.$subscribe((_mutation, state) => {
+  localStorage.setItem('entries', JSON.stringify(Array.from(state.entries.entries())))
+})
+
 const newEntries = reactive<Map<string, Entry>>(new Map())
 const displayableEntries = computed(() => [...store.entries.values(), ...newEntries.values()])
 
