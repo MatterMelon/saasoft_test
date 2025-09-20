@@ -5,7 +5,7 @@ export interface Tag {
 }
 
 export interface Entry {
-  id: number
+  id: string
   tags: Tag[]
   type: EntryTypes
   login: string
