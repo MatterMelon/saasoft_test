@@ -19,6 +19,7 @@ const state = reactive({
   type: props.entry.type,
   login: props.entry.login,
   password: props.entry.password,
+  isPasswordVisible: false,
   errors: {
     login: '',
     password: '',
@@ -90,13 +91,24 @@ const validateFields = () => {
       </span>
     </div>
     <div v-if="state.type === LOCAL" class="flex flex-col">
-      <InputText
-        v-model="state.password"
-        placeholder="Пароль"
-        maxlength="100"
-        @blur="validateFields"
-        :class="`h-10 ${state.errors.password ? 'error' : ''}`"
-      />
+      <div class="relative flex h-10 items-center">
+        <InputText
+          v-model="state.password"
+          placeholder="Пароль"
+          maxlength="100"
+          :type="state.isPasswordVisible ? 'text' : 'password'"
+          @blur="validateFields"
+          :class="`pr-10 h-full w-full ${state.errors.password ? 'error' : ''}`"
+        />
+        <button
+          type="button"
+          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+          @click="state.isPasswordVisible = !state.isPasswordVisible"
+        >
+          <i :class="state.isPasswordVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+        </button>
+      </div>
+
       <span class="text-red-500 text-sm min-h-[1.25rem]">
         {{ state.errors?.password || '' }}
       </span>
