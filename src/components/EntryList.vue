@@ -1,34 +1,46 @@
 <script setup lang="ts">
 import type { Entry } from '@/types/models'
 import SingleEntry from './SingleEntry.vue'
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
+import { useEntriesStore } from '@/store'
+import { Button } from 'primevue'
+import { LOCAL } from '@/types/entryTypes'
 
-const entries = reactive<Entry[]>([
-  {
-    id: 1,
-    tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
-    type: 'local',
-    login: 'Test User 1',
-    password: '',
-  },
-  {
-    id: 2,
-    tags: [{ text: 'Tag1' }, { text: 'Tag2' }],
-    type: 'local',
-    login: 'Test User 2',
-    password: '',
-  },
-])
+const store = useEntriesStore()
+const newEntries = reactive<Entry[]>([])
+const displayableEntries = computed(() => [...store.entries, ...newEntries])
 
-const deleteEntry = (id: number) => {
-  entries.splice(0, entries.length, ...entries.filter((e) => e.id !== id))
+const deleteNewEntry = (id: string) => {
+  const index = newEntries.findIndex((e) => e.id === id)
+  newEntries.splice(index, 1)
+}
+
+const handleDelete = (id: string) => {
+  const isNew = newEntries.some((e) => e.id === id)
+  if (isNew) {
+    deleteNewEntry(id)
+    return
+  }
+
+  store.deleteEntry(id)
+}
+
+const addNewEntry = () => {
+  newEntries.push({
+    id: crypto.randomUUID().toString(),
+    tags: [],
+    type: LOCAL,
+    login: '',
+    password: '',
+  })
 }
 </script>
 
 <template>
+  <Button label="" icon="pi pi-plus" type="button" class="p-button-outlined" @click="addNewEntry" />
   <ul>
-    <li v-for="entry in entries" :key="entry.id">
-      <SingleEntry :entry="entry" :delete-entry="deleteEntry" />
+    <li v-for="entry in displayableEntries" :key="entry.id">
+      <SingleEntry :entry="entry" :delete-entry="handleDelete" />
     </li>
   </ul>
 </template>
