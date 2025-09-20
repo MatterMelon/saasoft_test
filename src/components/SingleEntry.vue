@@ -33,6 +33,7 @@ const typeOptions = [
 const updateEntry = () => {}
 
 const validateFields = () => {
+  console.log(state.type)
   for (const key in state.errors) {
     state.errors[key as keyof typeof state.errors] = ''
   }
@@ -49,56 +50,65 @@ const validateFields = () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <InputText
-      v-model="state.tags"
-      placeholder="Метки"
-      maxlength="50"
-      @blur="validateFields"
-      class="h-10"
-    />
-  </div>
-  <div class="flex flex-col">
-    <Dropdown
-      v-model="state.type"
-      :options="typeOptions"
-      option-label="label"
-      placeholder="Выберите тип"
-      @blur="validateFields"
-      class="w-full h-10"
-    />
-  </div>
-  <div class="flex flex-col">
-    <InputText
-      v-model="state.login"
-      placeholder="Логин"
-      maxlength="100"
-      @blur="validateFields"
-      class="h-10"
-    />
-    <span class="text-red-500 text-sm min-h-[1.25rem]">
-      {{ state.errors?.login || '' }}
-    </span>
-  </div>
-  <div class="flex flex-col">
-    <InputText
-      v-model="state.password"
-      placeholder="Пароль"
-      maxlength="100"
-      @blur="validateFields"
-      class="h-10"
-    />
-    <span class="text-red-500 text-sm min-h-[1.25rem]">
-      {{ state.errors?.password || '' }}
-    </span>
-  </div>
-  <div class="flex items-center justify-center pb-6">
-    <button
-      type="button"
-      class="text-gray-500 hover:text-red-500"
-      @click="() => deleteEntry(props.entry.id)"
-    >
-      <i class="pi pi-trash text-lg"></i>
-    </button>
+  <div
+    :class="
+      state.type !== LOCAL
+        ? 'grid grid-cols-[1fr_0.4fr_2fr_40px] gap-2 items-stretch'
+        : 'grid grid-cols-[1fr_0.4fr_1fr_1fr_40px] gap-2 items-stretch'
+    "
+  >
+    <div class="flex flex-col">
+      <InputText
+        v-model="state.tags"
+        placeholder="Метки"
+        maxlength="50"
+        @blur="validateFields"
+        class="h-10"
+      />
+    </div>
+    <div class="flex flex-col">
+      <Dropdown
+        v-model="state.type"
+        :options="typeOptions"
+        option-label="label"
+        option-value="value"
+        placeholder="Выберите тип"
+        @blur="validateFields"
+        class="w-full h-10 min-w-60"
+      />
+    </div>
+    <div class="flex flex-col">
+      <InputText
+        v-model="state.login"
+        placeholder="Логин"
+        maxlength="100"
+        @blur="validateFields"
+        class="h-10"
+      />
+      <span class="text-red-500 text-sm min-h-[1.25rem]">
+        {{ state.errors?.login || '' }}
+      </span>
+    </div>
+    <div v-if="state.type === LOCAL" class="flex flex-col">
+      <InputText
+        v-model="state.password"
+        placeholder="Пароль"
+        maxlength="100"
+        @blur="validateFields"
+        class="h-10"
+      />
+      <span class="text-red-500 text-sm min-h-[1.25rem]">
+        {{ state.errors?.password || '' }}
+      </span>
+    </div>
+    <div class="flex items-center justify-center pb-6">
+      <button
+        type="button"
+        class="text-gray-500 hover:text-red-500"
+        @click="() => deleteEntry(props.entry.id)"
+      >
+        <i class="pi pi-trash text-lg"></i>
+      </button>
+    </div>
   </div>
 </template>

@@ -46,15 +46,7 @@ const addNewEntry = () => {
     <div></div>
   </div>
   <ul class="flex flex-col gap-4">
-    <li
-      v-for="entry in displayableEntries"
-      :key="entry.id"
-      :class="
-        entry.type !== LOCAL
-          ? 'grid grid-cols-[1fr_0.4fr_2fr_40px] gap-2 items-stretch'
-          : 'grid grid-cols-[1fr_0.4fr_1fr_1fr_40px] gap-2 items-stretch'
-      "
-    >
+    <li v-for="entry in displayableEntries" :key="entry.id">
       <SingleEntry :entry="entry" :delete-entry="handleDelete" />
     </li>
   </ul>
