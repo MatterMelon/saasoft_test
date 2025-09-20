@@ -76,8 +76,8 @@ watch(
   <div
     :class="
       state.type !== LOCAL
-        ? 'grid grid-cols-[1fr_0.4fr_2fr_40px] gap-2 items-stretch'
-        : 'grid grid-cols-[1fr_0.4fr_1fr_1fr_40px] gap-2 items-stretch'
+        ? 'grid gap-2 grid-cols-1 mb:10 lg:grid-cols-[1fr_0.4fr_2fr_40px] items-stretch'
+        : 'grid gap-2 grid-cols-1 mb-10 lg:grid-cols-[1fr_0.4fr_1fr_1fr_40px] lg:mb-0'
     "
   >
     <div class="flex flex-col">
@@ -108,7 +108,7 @@ watch(
         @blur="validateFields"
         :class="`h-10 ${state.errors.login ? 'error' : ''}`"
       />
-      <span class="text-red-500 text-sm min-h-[1.25rem]">
+      <span v-if="state.errors.login" class="text-red-500 text-sm min-h-[1.25rem]">
         {{ state.errors?.login || '' }}
       </span>
     </div>
@@ -131,7 +131,7 @@ watch(
         </button>
       </div>
 
-      <span class="text-red-500 text-sm min-h-[1.25rem]">
+      <span v-if="state.errors.password" class="text-red-500 text-sm min-h-[1.25rem]">
         {{ state.errors?.password || '' }}
       </span>
     </div>
