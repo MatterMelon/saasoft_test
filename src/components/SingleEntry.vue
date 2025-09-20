@@ -135,10 +135,10 @@ watch(
         {{ state.errors?.password || '' }}
       </span>
     </div>
-    <div class="flex items-center justify-center pb-6">
+    <div class="flex items-center justify-center h-10">
       <button
         type="button"
-        class="text-gray-500 hover:text-red-500"
+        class="text-gray-500 hover:text-red-500 p-3"
         @click="() => deleteEntry(props.entry.id)"
       >
         <i class="pi pi-trash text-lg"></i>
