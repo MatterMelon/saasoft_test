@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AccountsPage from './pages/AccountsPage.vue'
+</script>
 
 <template>
-  <ButtonDefault label="Click Me" icon="pi pi-check" />
+  <AccountsPage />
 </template>
 
 <style scoped></style>
