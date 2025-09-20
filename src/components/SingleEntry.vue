@@ -83,7 +83,7 @@ const validateFields = () => {
         placeholder="Логин"
         maxlength="100"
         @blur="validateFields"
-        class="h-10"
+        :class="`h-10 ${state.errors.login ? 'error' : ''}`"
       />
       <span class="text-red-500 text-sm min-h-[1.25rem]">
         {{ state.errors?.login || '' }}
@@ -95,7 +95,7 @@ const validateFields = () => {
         placeholder="Пароль"
         maxlength="100"
         @blur="validateFields"
-        class="h-10"
+        :class="`h-10 ${state.errors.password ? 'error' : ''}`"
       />
       <span class="text-red-500 text-sm min-h-[1.25rem]">
         {{ state.errors?.password || '' }}
@@ -112,3 +112,13 @@ const validateFields = () => {
     </div>
   </div>
 </template>
+
+<style>
+.error {
+  border: 1px solid rgb(170, 27, 27) !important;
+}
+.error:hover,
+.error:focus {
+  border: 1px solid rgb(209, 20, 20) !important ;
+}
+</style>
